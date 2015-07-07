@@ -86,23 +86,20 @@ header('Content-Type: text/html; charset=UTF-8');
 
 
 <?php
-
-
 class Celda{
 	var $valor;
 	var $izq;
 	var $der;
-
 	function assign_values($valor,$izq,$der){
 		$this->valor=$valor;
 		$this->izq=$izq;
 		$this->der=$der;
 	}
-
 	
 	function resolver(){
-
+	
 	$flag=False;
+	
 	if($this->valor==0){
 		if($this->izq->valor!=0 and $this->der->valor!=0){
 			$this->valor=$this->izq->valor + $this->der->valor;
@@ -119,13 +116,22 @@ class Celda{
 			$this->der->valor = $this->valor - $this->izq->valor;
 			$flag=True;	
 		}
+	}	if($this->izq->resolver()==FALSE && $this->der->resolver()==FALSE){
 
+		$this->izq->resolver();
 	}
-		if($flag==False){
-			#agregar a cola
+		else{
 			
+			if($this->izq->resolver()==FALSE){
+			$this->der->resolver();
 		}
-	return $flag;
+
+			if($this->der->resolver()==FALSE){
+			$this->izq->resolver();
+		}
+	
+		}
+		return $flag;
 	}
 
 	function resuelto(){
@@ -136,10 +142,8 @@ class Celda{
 		return $flag;
 	}
 }
-
 class CeldaAbajo extends Celda{
 	var $valor;
-
 	function assign_values_base($valor){
 		$this->valor;
 	}
@@ -147,93 +151,57 @@ class CeldaAbajo extends Celda{
 	function resolver(){
 		return False;
 	}
-
 	function resuelto(){ 
 		return ($this->valor!=0);
 	}
 }
 
-class Queue{
-	var $queue;
-
-	function agregar_cola($celda){
-		$this->queue = $celda;
-	}
-}
-
 if(isset($_POST['enviar'])){
-
 	#Armar pirámide
-
-	$cola = new Queue;
-
 	$celda21 = new CeldaAbajo;
 	$celda21 -> assign_values_base($_POST['celda21']);
-
 	$celda20 = new CeldaAbajo;
 	$celda20 -> assign_values_base($_POST['celda20']);
-
 	$celda19 = new CeldaAbajo;
 	$celda19 -> assign_values_base($_POST['celda19']);
-
 	$celda18 = new CeldaAbajo;
 	$celda18 -> assign_values_base($_POST['celda18']);
-
 	$celda17 = new CeldaAbajo;
 	$celda17 -> assign_values_base($_POST['celda17']);
-
 	$celda16 = new CeldaAbajo;
 	$celda16 -> assign_values_base($_POST['celda16']);
-
 	$celda15 = new Celda;
 	$celda15 -> assign_values($_POST['celda15'],$celda20,$celda21);
-
 	$celda14 = new Celda;
 	$celda14 -> assign_values($_POST['celda14'],$celda19,$celda20);
-
 	$celda13 = new Celda;
 	$celda13 -> assign_values($_POST['celda13'],$celda18,$celda19);
-
 	$celda12 = new Celda;
 	$celda12 -> assign_values($_POST['celda12'],$celda17,$celda18);
-
 	$celda11 = new Celda;
 	$celda11 -> assign_values($_POST['celda11'],$celda16,$celda17);
-
 	$celda10 = new Celda;
 	$celda10 -> assign_values($_POST['celda10'],$celda14,$celda15);
-
 	$celda9 = new Celda;
 	$celda9 -> assign_values($_POST['celda9'],$celda13,$celda14);
-	
 	$celda8 = new Celda;
 	$celda8 -> assign_values($_POST['celda8'],$celda12,$celda13);
-
 	$celda7 = new Celda;
 	$celda7 -> assign_values($_POST['celda7'],$celda11,$celda12);
-
 	$celda6 = new Celda;
 	$celda6 -> assign_values($_POST['celda6'],$celda9,$celda10);
-
 	$celda5 = new Celda;
 	$celda5 -> assign_values($_POST['celda5'],$celda8,$celda9);
-
 	$celda4 = new Celda;
 	$celda4 -> assign_values($_POST['celda4'],$celda7,$celda8);
-
 	$celda3 = new Celda;
 	$celda3 -> assign_values($_POST['celda3'],$celda5,$celda6);
-
 	$celda2 = new Celda;
 	$celda2 -> assign_values($_POST['celda2'],$celda4,$celda5);
-
 	$celda1 = new Celda;
 	$celda1 -> assign_values($_POST['celda1'],$celda2,$celda3);
-
 		
-
 	#Comprobar que no se repitan los números de la base
-
 	$check_post=array(
 	
 	$_POST['celda16'],
@@ -247,23 +215,17 @@ if(isset($_POST['enviar'])){
 	$_POST['celda20'],
 	
 	$_POST['celda21']
-
 		);
-
-
 	if (count(array_unique(array_diff($check_post,array("")))) < count(array_diff($check_post,array("")))){
-
 		echo "Se repiten los valores de la base";
 	}
-
 	else{
 		
 		$noresuelto=True;
 		while($noresuelto){
+			for($i=1;$i<16;$i++){
 			$noresuelto=$celda1->resolver();
-			$cola->queue->resolver();
-		}
-
+		}}
 		if($celda1->resuelto()){
 			
 	
@@ -277,13 +239,8 @@ if(isset($_POST['enviar'])){
 		else{
 			echo "No se puede resolver";
 		}
-
-
 	}
 }
-
-
-
 ?>
 
 </body>
