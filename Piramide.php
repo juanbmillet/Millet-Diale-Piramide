@@ -229,10 +229,33 @@ if(isset($_POST['enviar'])){
 			$noresuelto=$celda1->resolver();
 		}}
 
+		#Revisar si algún valor de la base es mayor que 6
+		
+		if($celda16->valor > 6 or $celda17->valor > 6 or $celda18->valor > 6 or $celda19->valor > 6 or $celda20->valor > 6 or $celda21->valor > 6){
+
+			echo "<p align='center'><font size='20'>Un valor de la base es mayor que 6</font></p>";
+			return 0;
+		}
+
+		#Revisar si algún valor de la base se repite
+
+		$check_base=array(
+		$celda16->valor,
+		$celda17->valor,
+		$celda18->valor,
+		$celda19->valor,
+		$celda20->valor,
+		$celda21->valor
+			);
+		
+		if (count(array_unique(array_diff($check_base,array("")))) < count(array_diff($check_base,array("")))){
+		echo "<br>";
+		echo "<p align='center'><font size='20'>Se repiten los valores de la base</font></p>";
+		return 0;
+	}	
 		#Perdon por esta asquerosidad :)
 
-		if($celda1->resuelto() and $celda2->resuelto() and $celda3->resuelto() and $celda4->resuelto() and $celda5->resuelto() and $celda6->resuelto() and $celda7->resuelto() and $celda8->resuelto() and $celda9->resuelto() and $celda10->resuelto() and $celda11->resuelto() and $celda12->resuelto() and $celda13->resuelto() and $celda14->resuelto() and $celda15->resuelto() and $celda16->resuelto() and $celda17->resuelto() and $celda18->resuelto() and $celda19->resuelto() and $celda20->resuelto() and $celda21->resuelto()){
-			
+		if($celda1->resuelto() and $celda2->resuelto() and $celda3->resuelto() and $celda4->resuelto() and $celda5->resuelto() and $celda6->resuelto() and $celda7->resuelto() and $celda8->resuelto() and $celda9->resuelto() and $celda10->resuelto() and $celda11->resuelto() and $celda12->resuelto() and $celda13->resuelto() and $celda14->resuelto() and $celda15->resuelto() and $celda16->resuelto() and $celda17->resuelto() and $celda18->resuelto() and $celda19->resuelto() and $celda20->resuelto() and $celda21->resuelto()){	
 	
 		 echo "<p align='center'><font size='20'>".$celda1->valor."</font></p>";
 		 echo "<p align='center'><font size='20'>".$celda2->valor."&nbsp; &nbsp;".$celda3->valor."</font></p>";
