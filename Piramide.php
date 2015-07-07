@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=UTF-8');
 </head>
 
 <body>
-<form method="post">
+		<form method="post">
 		
 		<div align="center">
 		<input type="number" name="celda1">
@@ -62,17 +62,17 @@ header('Content-Type: text/html; charset=UTF-8');
 		<br>
 	
 		<div align="center">
-		<input type="number" min="1" max="6" name="celda16"> 
+		<input type="number" min="0" max="6" name="celda16"> 
 		
-		<input type="number" min="1" max="6" name="celda17">
+		<input type="number" min="0" max="6" name="celda17">
 		
-		<input type="number" min="1" max="6" name="celda18">
+		<input type="number" min="0" max="6" name="celda18">
 		
-		<input type="number" min="1" max="6" name="celda19">
+		<input type="number" min="0" max="6" name="celda19">
 		
-		<input type="number" min="1" max="6" name="celda20">
+		<input type="number" min="0" max="6" name="celda20">
 		
-		<input type="number" min="1" max="6" name="celda21">
+		<input type="number" min="0" max="6" name="celda21">
 		</div>
 	
 		<br>
@@ -88,50 +88,76 @@ header('Content-Type: text/html; charset=UTF-8');
 <?php
 
 if(isset($_POST['enviar'])){
-	
-	$celda1=$_POST['celda1'];
-	
-	$celda2=$_POST['celda2'];
-	
-	$celda3=$_POST['celda3'];
-	
-	$celda4=$_POST['celda4'];
-	
-	$celda5=$_POST['celda5'];
-	
-	$celda6=$_POST['celda6'];
-	
-	$celda7=$_POST['celda7'];
-	
-	$celda8=$_POST['celda8'];
-	
-	$celda9=$_POST['celda9'];
-	
-	$celda10=$_POST['celda10'];
-	
-	$celda11=$_POST['celda11'];
-	
-	$celda12=$_POST['celda12'];
-	
-	$celda13=$_POST['celda13'];
-	
-	$celda14=$_POST['celda14'];
-	
-	$celda15=$_POST['celda15'];
-	
-	$celda16=$_POST['celda16'];
-	
-	$celda17=$_POST['celda17'];
-	
-	$celda18=$_POST['celda18'];
-	
-	$celda19=$_POST['celda19'];
-	
-	$celda20=$_POST['celda20'];
-	
-	$celda21=$_POST['celda21'];
 
+	#Armar pirámide
+
+	$celda21 = new Celda;
+	$celda21 -> assign_values($_POST['celda21'],NULL,NULL);
+
+	$celda20 = new Celda;
+	$celda20 -> assign_values($_POST['celda20'],NULL,NULL);
+
+	$celda19 = new Celda;
+	$celda19 -> assign_values($_POST['celda19'],NULL,NULL);
+
+	$celda18 = new Celda;
+	$celda18 -> assign_values($_POST['celda18'],NULL,NULL);
+
+	$celda17 = new Celda;
+	$celda17 -> assign_values($_POST['celda17'],NULL,NULL);
+
+	$celda16 = new Celda;
+	$celda16 -> assign_values($_POST['celda16'],NULL,NULL);
+
+	$celda15 = new Celda;
+	$celda15 -> assign_values($_POST['celda15'],$celda20,$celda21);
+
+	$celda14 = new Celda;
+	$celda14 -> assign_values($_POST['celda14'],$celda19,$celda20);
+
+	$celda13 = new Celda;
+	$celda13 -> assign_values($_POST['celda13'],$celda18,$celda19);
+
+	$celda12 = new Celda;
+	$celda12 -> assign_values($_POST['celda12'],$celda17,$celda18);
+
+	$celda11 = new Celda;
+	$celda11 -> assign_values($_POST['celda11'],$celda16,$celda17);
+
+	$celda10 = new Celda;
+	$celda10 -> assign_values($_POST['celda10'],$celda14,$celda15);
+
+	$celda9 = new Celda;
+	$celda9 -> assign_values($_POST['celda9'],$celda13,$celda14);
 	
+	$celda8 = new Celda;
+	$celda8 -> assign_values($_POST['celda8'],$celda12,$celda13);
+
+	$celda7 = new Celda;
+	$celda7 -> assign_values($_POST['celda7'],$celda11,$celda12);
+
+	$celda6 = new Celda;
+	$celda6 -> assign_values($_POST['celda6'],$celda9,$celda10);
+
+	$celda5 = new Celda;
+	$celda5 -> assign_values($_POST['celda5'],$celda8,$celda9);
+
+	$celda4 = new Celda;
+	$celda4 -> assign_values($_POST['celda4'],$celda7,$celda8);
+
+	$celda3 = new Celda;
+	$celda3 -> assign_values($_POST['celda3'],$celda5,$celda6);
+
+	$celda2 = new Celda;
+	$celda2 -> assign_values($_POST['celda2'],$celda4,$celda5);
+
+	$celda1 = new Celda;
+	$celda1 -> assign_values($_POST['celda1'],$celda2,$celda3);
+
+		
+
+	#Comprobar que no se repitan los números de la base
+
 	$check_post=array(
 	
 	$_POST['celda16'],
@@ -161,19 +187,60 @@ if(isset($_POST['enviar'])){
 }
 
 class Celda{
-	public $valor;
-	public $izq;
-	public $der; 
-}
+	var $valor;
+	var $izq;
+	var $der;
 
-class Queue{
+	function assign_values($valor,$izq,$der){
+		$this->valor=$valor;
+		$this->izq=$izq;
+		$this->der=$der;
+	}
 
-
-}
-
-class Piramide{
+	function resolver(){
 	
+	$flag=False;
+	if($this->valor==0){
+		if($this->izq->valor!=0 and $this->der->valor!=0){
+			$this->valor=$this->izq->valor + $this->der->valor;
+			$flag=True;
+		}
+	}
+	else{
+		if($this->izq->valor==0 and $this->der->valor!=0){
+			$this->izq->valor = $this->valor - $this->der->valor;
+			$flag=True;
+		}
+		
+		if($this->izq->valor!=0 and $this->der->valor==0){
+			$this->der->valor = $this->valor - $this->izq->valor;
+			$flag=True;
+		}
+
+	}
+	
+	$flag=$flag	or $this->izq->resolver() or $this->der->resolver();
+	return $flag;
 }
+
+	function resuelto(){
+		$flag=True;
+		if($this->valor==0){
+			$flag=False;
+		}
+
+		$flag=$flag or $this->izq->resuelto() or $this->der->resuelto();
+		return $flag;
+	}
+
+$noresuelto=True;
+while($noresuelto){
+	$noresuelto=$celda1->resolver();
+}
+
+if()
+
+
 ?>
 
 </body>
