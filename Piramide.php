@@ -87,27 +87,103 @@ header('Content-Type: text/html; charset=UTF-8');
 
 <?php
 
+
+class Celda{
+	var $valor;
+	var $izq;
+	var $der;
+
+	function assign_values($valor,$izq,$der){
+		$this->valor=$valor;
+		$this->izq=$izq;
+		$this->der=$der;
+	}
+
+	
+	function resolver(){
+
+	$flag=False;
+	if($this->valor==0){
+		if($this->izq->valor!=0 and $this->der->valor!=0){
+			$this->valor=$this->izq->valor + $this->der->valor;
+			$flag=True;
+		}
+	}
+	else{
+		if($this->izq->valor==0 and $this->der->valor!=0){
+			$this->izq->valor = $this->valor - $this->der->valor;
+			$flag=True;
+		}
+		
+		if($this->izq->valor!=0 and $this->der->valor==0){
+			$this->der->valor = $this->valor - $this->izq->valor;
+			$flag=True;	
+		}
+
+	}
+		if($flag==False){
+			#agregar a cola
+			
+		}
+	return $flag;
+	}
+
+	function resuelto(){
+		$flag=True;
+		if($this->valor==0){
+			$flag=False;
+		}
+		return $flag;
+	}
+}
+
+class CeldaAbajo extends Celda{
+	var $valor;
+
+	function assign_values_base($valor){
+		$this->valor;
+	}
+		
+	function resolver(){
+		return False;
+	}
+
+	function resuelto(){ 
+		return ($this->valor!=0);
+	}
+}
+
+class Queue{
+	var $queue;
+
+	function agregar_cola($celda){
+		$this->queue = $celda;
+	}
+}
+
 if(isset($_POST['enviar'])){
 
 	#Armar pirámide
 
-	$celda21 = new Celda;
-	$celda21 -> assign_values($_POST['celda21'],NULL,NULL);
+	$cola = new Queue;
 
-	$celda20 = new Celda;
-	$celda20 -> assign_values($_POST['celda20'],NULL,NULL);
+	$celda21 = new CeldaAbajo;
+	$celda21 -> assign_values_base($_POST['celda21']);
 
-	$celda19 = new Celda;
-	$celda19 -> assign_values($_POST['celda19'],NULL,NULL);
+	$celda20 = new CeldaAbajo;
+	$celda20 -> assign_values_base($_POST['celda20']);
 
-	$celda18 = new Celda;
-	$celda18 -> assign_values($_POST['celda18'],NULL,NULL);
+	$celda19 = new CeldaAbajo;
+	$celda19 -> assign_values_base($_POST['celda19']);
 
-	$celda17 = new Celda;
-	$celda17 -> assign_values($_POST['celda17'],NULL,NULL);
+	$celda18 = new CeldaAbajo;
+	$celda18 -> assign_values_base($_POST['celda18']);
 
-	$celda16 = new Celda;
-	$celda16 -> assign_values($_POST['celda16'],NULL,NULL);
+	$celda17 = new CeldaAbajo;
+	$celda17 -> assign_values_base($_POST['celda17']);
+
+	$celda16 = new CeldaAbajo;
+	$celda16 -> assign_values_base($_POST['celda16']);
 
 	$celda15 = new Celda;
 	$celda15 -> assign_values($_POST['celda15'],$celda20,$celda21);
@@ -182,63 +258,30 @@ if(isset($_POST['enviar'])){
 
 	else{
 		
+		$noresuelto=True;
+		while($noresuelto){
+			$noresuelto=$celda1->resolver();
+			$cola->queue->resolver();
+		}
 
-	}
-}
-
-class Celda{
-	var $valor;
-	var $izq;
-	var $der;
-
-	function assign_values($valor,$izq,$der){
-		$this->valor=$valor;
-		$this->izq=$izq;
-		$this->der=$der;
-	}
-
-	function resolver(){
+		if($celda1->resuelto()){
+			
 	
-	$flag=False;
-	if($this->valor==0){
-		if($this->izq->valor!=0 and $this->der->valor!=0){
-			$this->valor=$this->izq->valor + $this->der->valor;
-			$flag=True;
-		}
-	}
-	else{
-		if($this->izq->valor==0 and $this->der->valor!=0){
-			$this->izq->valor = $this->valor - $this->der->valor;
-			$flag=True;
-		}
-		
-		if($this->izq->valor!=0 and $this->der->valor==0){
-			$this->der->valor = $this->valor - $this->izq->valor;
-			$flag=True;
+		 echo "<p align='center'><font size='20'>".$celda1->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda2->valor."&nbsp; &nbsp;".$celda3->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda4->valor."&nbsp; &nbsp;".$celda5->valor."&nbsp; &nbsp;".$celda6->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda7->valor."&nbsp; &nbsp;".$celda8->valor."&nbsp; &nbsp;".$celda9->valor."&nbsp; &nbsp;".$celda10->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda11->valor."&nbsp; &nbsp;".$celda12->valor."&nbsp; &nbsp;".$celda13->valor."&nbsp; &nbsp;".$celda14->valor."&nbsp; &nbsp;".$celda15->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda16->valor."&nbsp; &nbsp;".$celda17->valor."&nbsp; &nbsp;".$celda18->valor."&nbsp; &nbsp;".$celda19->valor."&nbsp; &nbsp;".$celda20->valor."&nbsp; &nbsp;".$celda21->valor."</font></p>";
+			}
+		else{
+			echo "No se puede resolver";
 		}
 
+
 	}
-	
-	$flag=$flag	or $this->izq->resolver() or $this->der->resolver();
-	return $flag;
 }
 
-	function resuelto(){
-		$flag=True;
-		if($this->valor==0){
-			$flag=False;
-		}
-
-		$flag=$flag or $this->izq->resuelto() or $this->der->resuelto();
-		return $flag;
-	}
-
-$noresuelto=True;
-while($noresuelto){
-	$noresuelto=$celda1->resolver();
-}
-
-if()
 
 
 ?>
