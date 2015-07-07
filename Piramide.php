@@ -62,17 +62,17 @@ header('Content-Type: text/html; charset=UTF-8');
 		<br>
 	
 		<div align="center">
-		<input type="number" min="0" max="6" name="celda16"> 
+		<input type="number" min="1" max="6" name="celda16"> 
 		
-		<input type="number" min="0" max="6" name="celda17">
+		<input type="number" min="1" max="6" name="celda17">
 		
-		<input type="number" min="0" max="6" name="celda18">
+		<input type="number" min="1" max="6" name="celda18">
 		
-		<input type="number" min="0" max="6" name="celda19">
+		<input type="number" min="1" max="6" name="celda19">
 		
-		<input type="number" min="0" max="6" name="celda20">
+		<input type="number" min="1" max="6" name="celda20">
 		
-		<input type="number" min="0" max="6" name="celda21">
+		<input type="number" min="1" max="6" name="celda21">
 		</div>
 	
 		<br>
@@ -139,13 +139,14 @@ class Celda{
 		if($this->valor==0){
 			$flag=False;
 		}
+
 		return $flag;
 	}
 }
 class CeldaAbajo extends Celda{
 	var $valor;
 	function assign_values_base($valor){
-		$this->valor;
+		$this->valor=$valor;
 	}
 		
 	function resolver(){
@@ -217,7 +218,8 @@ if(isset($_POST['enviar'])){
 	$_POST['celda21']
 		);
 	if (count(array_unique(array_diff($check_post,array("")))) < count(array_diff($check_post,array("")))){
-		echo "Se repiten los valores de la base";
+		echo "<br>";
+		echo "<p align='center'><font size='20'>Se repiten los valores de la base</font></p>";
 	}
 	else{
 		
@@ -226,18 +228,22 @@ if(isset($_POST['enviar'])){
 			for($i=1;$i<16;$i++){
 			$noresuelto=$celda1->resolver();
 		}}
-		if($celda1->resuelto()){
+
+		#Perdon por esta asquerosidad :)
+
+		if($celda1->resuelto() and $celda2->resuelto() and $celda3->resuelto() and $celda4->resuelto() and $celda5->resuelto() and $celda6->resuelto() and $celda7->resuelto() and $celda8->resuelto() and $celda9->resuelto() and $celda10->resuelto() and $celda11->resuelto() and $celda12->resuelto() and $celda13->resuelto() and $celda14->resuelto() and $celda15->resuelto() and $celda16->resuelto() and $celda17->resuelto() and $celda18->resuelto() and $celda19->resuelto() and $celda20->resuelto() and $celda21->resuelto()){
 			
 	
 		 echo "<p align='center'><font size='20'>".$celda1->valor."</font></p>";
 		 echo "<p align='center'><font size='20'>".$celda2->valor."&nbsp; &nbsp;".$celda3->valor."</font></p>";
 		 echo "<p align='center'><font size='20'>".$celda4->valor."&nbsp; &nbsp;".$celda5->valor."&nbsp; &nbsp;".$celda6->valor."</font></p>";
 		 echo "<p align='center'><font size='20'>".$celda7->valor."&nbsp; &nbsp;".$celda8->valor."&nbsp; &nbsp;".$celda9->valor."&nbsp; &nbsp;".$celda10->valor."</font></p>";
-		 echo "<p align='center'><font size='20'>".$celda11->valor."&nbsp; &nbsp;".$celda12->valor."&nbsp; &nbsp;".$celda13->valor."&nbsp; &nbsp;".$celda14->valor."&nbsp; &nbsp;".$celda15->valor."</font></p>";
-		 echo "<p align='center'><font size='20'>".$celda16->valor."&nbsp; &nbsp;".$celda17->valor."&nbsp; &nbsp;".$celda18->valor."&nbsp; &nbsp;".$celda19->valor."&nbsp; &nbsp;".$celda20->valor."&nbsp; &nbsp;".$celda21->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda11->valor."&nbsp; &nbsp; &nbsp;".$celda12->valor."&nbsp; &nbsp; &nbsp;".$celda13->valor."&nbsp; &nbsp; &nbsp;".$celda14->valor."&nbsp; &nbsp; &nbsp;".$celda15->valor."</font></p>";
+		 echo "<p align='center'><font size='20'>".$celda16->valor."&nbsp; &nbsp; &nbsp;".$celda17->valor."&nbsp; &nbsp; &nbsp;".$celda18->valor."&nbsp; &nbsp; &nbsp;".$celda19->valor."&nbsp; &nbsp; &nbsp;".$celda20->valor."&nbsp; &nbsp; &nbsp;".$celda21->valor."</font></p>";
 			}
 		else{
-			echo "No se puede resolver";
+			echo "<br>";
+			echo "<p align='center'><font size='20'>No se puede resolver</font></p>";
 		}
 	}
 }
